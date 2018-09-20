@@ -5,7 +5,30 @@ const _ = require('underscore');
 const Usuario = require('../models/user');
 
 app.get('/usuario', function(req, res) {
-    res.json('get user')
+    let condition = { estado: true };
+    let desde = req.query.desde || 0;
+    let limite = req.query.limite || 5;
+    desde = Number(desde);
+    limite = Number(limite);
+
+    Usuario.count(condition, (err, count) => {
+        Usuario.find(condition, 'nombre email role estado img google')
+            .skip(desde)
+            .limit(limite)
+            .exec((err, result) => {
+                if (err) {
+                    return res.status(400).json({
+                        err
+                    });
+                } else {
+                    res.json({
+                        ok: true,
+                        usuarios: result,
+                        count
+                    })
+                }
+            });
+    });
 });
 
 app.post('/usuario', function(req, res) {
@@ -49,8 +72,37 @@ app.put('/usuario/:id', function(req, res) {
     });
 });
 
-app.delete('/usuario', function(req, res) {
-    res.json('delete user')
+app.delete('/usuario/:id', function(req, res) {
+    let id = req.params.id;
+    let cambiaEstado = {
+        estado: false
+    }
+
+    Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuario) => {
+        if (err) {
+            return res.status(400).json({
+                err
+            });
+        } else {
+            res.json({
+                ok: true,
+                usuario
+            })
+        }
+    });
+
+    // Usuario.findByIdAndRemove(id, (err, usuario) => {
+    //     if (err) {
+    //         return res.status(400).json({
+    //             err
+    //         });
+    //     } else {
+    //         res.json({
+    //             ok: true,
+    //             usuario
+    //         })
+    //     }
+    // });
 });
 
 module.exports = app;
