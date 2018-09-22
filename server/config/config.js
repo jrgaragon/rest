@@ -15,3 +15,5 @@ process.env.URLDB = urlDatabase;
 process.env.EXPIRATION_DATE = 60 * 60 * 24 * 30;
 
 process.env.TOKEN_SEED = process.env.TOKEN_SEED || 'este-es-el-seed-desarrollo';
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '544760118170-j1neb7ts9vd8g3uq95i2m4m1dka4i1go.apps.googleusercontent.com';
