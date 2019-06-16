@@ -21,5 +21,5 @@ mongoose.connect(process.env.URLDB, { useNewUrlParser: true }, (err) => {
 });
 
 app.listen(process.env.PORT, () => {
-    console.log('escuchando', process.env.PORT);
+    console.log('listening', process.env.PORT);
 });
